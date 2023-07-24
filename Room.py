@@ -5,7 +5,9 @@ class Room:
         self.fr=Light(f)
         self.k= Light(k)
         self.t=Thermostat(temp)
-        device
+        devices= [fr, k, t]
     def leave_routine():
-        
+        for x in devices:
+            x.set_status(false)
+
         
