@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from Device import Device 
 from Room import Room 
+from Home import Home
 
 app = Flask(__name__)
 
@@ -12,5 +13,5 @@ if __name__ =='__main__':
 def hello_world():
     return "<p>Hello, World!</p>"
 
-r = Room(True,True, 65)
+r = Home(True,True, 65)
 r.leave_routine()

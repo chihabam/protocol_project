@@ -3,7 +3,7 @@ class Device:
         self.status=True 
         self.name= name
         self.id= id
-        print("New Device: "+ str(id))
+        #print("New Device: "+ str(id))
         #Where true is on and false is off
     def get_status(self):
         #return self.status

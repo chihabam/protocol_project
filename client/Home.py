@@ -5,7 +5,7 @@ class Home:
     def __init__(self,f, k,temp):
         self.fr=Light(12,"Family Home")
         self.k= Light(1,"Kitchen")
-        self.t=Thermostat(13,temp)
+        self.t=Thermostat(13,"Thermostat",temp)
         self.h = 5 + Home.tool
         self.devices=[self.fr,self.k,self.t]
     def test(self):
