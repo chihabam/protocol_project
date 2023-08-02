@@ -1,17 +1,22 @@
+import socket
 from flask import Flask
 from flask_restful import Api
 from Device import Device 
 from Room import Room 
 from Home import Home
 
-app = Flask(__name__)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind(('', 8000))
+print("Socket bound to " + sock.getsockname()[0])
+sock.listen()
+print("Server listening...")
 
-if __name__ =='__main__':
-   app.run(host="0.0.0.0",debug=True) 
+def run():
+    while True:
+        connectionSocket, addr = sock.accept()
+        print("CONNECTED SOURCE: " + str(addr))
+        # connectionSocket.close()
+        r = Home(True,True, 65)
+        # r.leave_routine()
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-r = Home(True,True, 65)
-r.leave_routine()
+run()       

@@ -22,13 +22,25 @@ def sel_home():
     print("What type of device is this? \n1. Light \n2. Thermostat \n3. Go Back")
     dev_type= int(input())
     if dev_type == 1:
+            light_menu()
+    elif dev_type== 2:
+            thermostat_menu()
+    elif dev_type== 3:  
+            menu()
         
-
-def light_ops():
-    print("What would you like to do? \n1. Delete Temp")
-
-def thermostat_ops():
-    print("What would you like to do? \n1. Turn off \n2. Change Temperature \n3. Do nothing")
+# def therm_ops(dir,value, diff):
+#      if(dir == 1):
+#           return value + diff
+#      elif dir== 2:
+#           return value - diff
+        
+     
+def thermostat_menu():
+    print("What do you want to change the temperature to in Farenheit?")
+    choice = int(input())
+    print("Changing temperature to ", choice)
+def light_menu():
+    print("What would you like to do the light? \n1. Turn off \n2. Turn On\n3. Do nothing")
     sel= int(input())
     if(sel==1 or sel ==2):
         print("request sent")
@@ -45,7 +57,7 @@ def menu(val):
         elif(sel ==2 ):
             build_home()
         elif(sel==3):
-            print("You may end the program")
+            print("Ending session")
 menu(None)
 
     
