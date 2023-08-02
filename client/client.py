@@ -19,8 +19,10 @@ def sel_home():
     id_sel= int(input())
     print("Please enter device name: ")
     dev_name=str(input())
-    print("What type of device is this? \n1. Light \n2. Thermostat \n3.Go Back")
-    input()
+    print("What type of device is this? \n1. Light \n2. Thermostat \n3. Go Back")
+    dev_type= int(input())
+    if dev_type == 1:
+        
 
 def light_ops():
     print("What would you like to do? \n1. Delete Temp")
