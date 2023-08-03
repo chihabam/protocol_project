@@ -1,5 +1,6 @@
 from Light import Light 
 from Thermostat import Thermostat 
+
 class Room:
     tool =12
     def __init__(self,f, k,temp):
@@ -8,6 +9,7 @@ class Room:
         self.t=Thermostat(13,temp)
         self.h = 5 + Room.tool
         self.devices=[self.fr,self.k,self.t]
+        
     def test(self):
         print(self.devices)
 
