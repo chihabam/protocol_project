@@ -3,10 +3,12 @@ from Home import Home
 from PDU import Datagram
 import socket
 import sys
+import time
 
 
-sock= socket.socket()
-port= 8040
+
+sock= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port= 8030
 ip="0.0.0.0"
 
 try:
@@ -15,6 +17,8 @@ try:
 except:
     print("Destination IP address not entered.\n...\nSwitching to default IP")
 sock.connect((str(ip),port))
+
+
 
 class Request:
 
@@ -31,9 +35,7 @@ class Request:
 
 
     def sel_home(self):
-        print("Please enter existing home id: ")
-        id_sel= int(input())
-        self.pdu.set_home(1,id_sel)
+        self.pdu.set_home(1,1)
         print("Please enter device name: ")
         dev_name=str(input())
         print("What type of device is this? \n1. Light \n2. Thermostat \n3. Go Back")
@@ -44,7 +46,7 @@ class Request:
         elif dev_type== 2:
                 self.thermostat_menu()
         elif dev_type== 3:  
-                menu()   
+                menu(None)   
     def thermostat_menu(self):
         print("What do you want to set the temperature to (Farenheit)?")
         choice = int(input())
@@ -58,24 +60,32 @@ class Request:
 
     def light_menu(self):
         print("What would you like to do the light? \n1. Turn off \n2. Turn On\n3. Do nothing")
-        sel= int(input())
+        sel= int(input()) -1
         self.pdu.set_operation(0,1,sel)
         command = str(self.pdu.toString())
-        print(command)
-        if(sel ==1 ):
-            self.send_rq(str(command))
-        elif (sel == 2):
-            self.send_rq(str(command))
+        self.send_rq(str(command))
         clone =self.pdu.decode_str(str(command))
         
     
     def send_rq(self,str_cmd):
         print("Sending Packet: ", self.pdu.seq_num)
         sock.send(str(str_cmd).encode())
+        print("Done Sending")
         response = sock.recv(1024).decode()
         if (response):
             self.pdu.seq_num= self.pdu.seq_num
             print("Server response:", response)
+        sock.close()
+
+    def print_pdu(self):
+         print (self)
+    
+
+def get_home(h_id=1):
+     home_id=h_id
+
+def get_all_homes():
+     print(1)
 
 def menu(val):
     #Val is technically optoinal but allows outer methods force menu optoin if needed
@@ -94,6 +104,8 @@ def menu(val):
         elif(sel ==2 ):
             req.build_home()
         elif(sel==3):
+             print(1)
+        elif (sel==4):
             print("Ending session")
 menu(None)
 

@@ -5,15 +5,15 @@ from flask import jsonify
 
 class Datagram:
     seq=0
-    def __init__(self,Home):
-        self.Home= Home
+    def __init__(self,home=None):
+        self.Home= home
         Datagram.seq= Datagram.seq+10
         self.seq_num=Datagram.seq
         #print("New Datagram", self.seq)
 
     def decode_str(self,string_in):
         #The decoder will parse elements one line at a time
-        vals= str(string_in).split(" ")
+        vals= str(string_in).split("_")
         self.seq_num=vals[0]
         self.dPort= vals[1]
         self.dIP=vals[2]
@@ -27,7 +27,7 @@ class Datagram:
         self.op_id=vals[10]
         self.op=vals[11]
         self.payload=vals[12]
-        print("Decoded", vals)
+        print("Decoded", self)
     
     def set_ports(self,dest_p,dest_ip):
          self.dPort=dest_p
@@ -54,7 +54,7 @@ class Datagram:
                 self.msg_type,self.msg_resp_num,
                 self.home_op,self.home_id,self.d_type,self.d_name,
                 self.d_id,self.op_id,self.op,self.payload]
-        list_str= " ".join(str(i) for i in list)
+        list_str= "_".join(str(i) for i in list)
         print("Items into a list_str", list_str)
         return list_str
     
