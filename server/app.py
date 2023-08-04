@@ -26,6 +26,9 @@ def client_handler(c_socket):
 
 
 def run():
+    sequence_num=0
+
+    
     while True:
         connectionSocket, addr = sock.accept()
         print("CONNECTED SOURCE: " + str(addr))

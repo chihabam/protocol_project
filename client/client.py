@@ -2,11 +2,19 @@ from http import HTTPStatus
 from Home import Home
 from PDU import Datagram
 import socket
+import sys
 
 
 sock= socket.socket()
 port= 8040
-sock.connect(("",port))
+ip="0.0.0.0"
+
+try:
+     if(sys.argv[1]!=None):
+         ip = sys.argv[1]
+except:
+    print("Destination IP address not entered.\n...\nSwitching to default IP")
+sock.connect((str(ip),port))
 
 class Request:
 
@@ -15,8 +23,10 @@ class Request:
          self.pdu=Datagram(self.home)
          
     def build_home(self):
-        print("Please enter new id: ")
-        id_sel= int(input())
+        print("Building feature not yet available")
+        # id_sel= int(input())
+        # t_str= self.pdu.toString()
+        # clone =Datagram.decode_str(t_str)
 
 
 
@@ -28,7 +38,7 @@ class Request:
         dev_name=str(input())
         print("What type of device is this? \n1. Light \n2. Thermostat \n3. Go Back")
         dev_type= int(input())
-        self.pdu.set_device(dev_type,dev_name,19245)
+        self.pdu.set_device(dev_type,dev_name,19265+self.pdu.seq_num)
         if dev_type == 1:
                 self.light_menu()
         elif dev_type== 2:
@@ -50,24 +60,33 @@ class Request:
         print("What would you like to do the light? \n1. Turn off \n2. Turn On\n3. Do nothing")
         sel= int(input())
         self.pdu.set_operation(0,1,sel)
-        command = self.pdu.toString()
+        command = str(self.pdu.toString())
         print(command)
-        self.send_rq(str(command))
+        if(sel ==1 ):
+            self.send_rq(str(command))
+        elif (sel == 2):
+            self.send_rq(str(command))
+        clone =self.pdu.decode_str(str(command))
+        
     
     def send_rq(self,str_cmd):
+        print("Sending Packet: ", self.pdu.seq_num)
         sock.send(str(str_cmd).encode())
         response = sock.recv(1024).decode()
-        print("Server response:", response)
+        if (response):
+            self.pdu.seq_num= self.pdu.seq_num
+            print("Server response:", response)
 
 def menu(val):
     #Val is technically optoinal but allows outer methods force menu optoin if needed
     done = False
     sel= None
-    req= Request()
-    req.pdu.set_ports(None,port)
     resp_num=0
     while sel!=3 :
-        print("Please select a menu action: \n1. Select home\n2. Build a home\n3. Leave")
+        req= Request()
+        req.pdu.set_ports(port,ip)
+        resp_num=0
+        print("\n------- Menu ------- \n1. Select home\n2. Build a home\n3. Leave")
         sel=int(input())
         if sel==1:
             req.pdu.set_msg_flags(1,0)
